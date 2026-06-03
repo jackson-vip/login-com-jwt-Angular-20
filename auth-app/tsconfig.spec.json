@@ -1,0 +1,10 @@
+// Este arquivo é o tsconfig específico para os testes unitários. Ele estende o tsconfig principal e adiciona configurações específicas para os testes, como a inclusão dos tipos do Jasmine.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": ["jasmine"],
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts"]
+}

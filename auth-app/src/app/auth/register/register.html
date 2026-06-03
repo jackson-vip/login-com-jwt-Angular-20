@@ -1,0 +1,42 @@
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Sistema de login</h2>
+        <p>Realize seu login informando seus dados abaixo:</p>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <!-- Nome -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" formControlName="username" placeholder="Nome Completo" />
+                @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']) {
+                    <small class="error">O nome é obrigatório.</small>
+                }
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" formControlName="email" placeholder="seuemail@provedor.com" />
+                @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+                    <small class="error">O email é obrigatório.</small>
+                }
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" formControlName="password" placeholder="Senha" />
+                @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+                    <small class="error">A senha é obrigatória.</small>
+                }
+                @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']) {
+                    <small class="error">A senha deve ter no mínimo 6 caracteres.</small>
+                }
+            </div>
+
+            <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">Register</button>
+        </form>
+        <div class="auth-foot">
+            <p>Já tem uma conta? <a routerLink="/login">Faça login</a></p>
+        </div>
+    </div>
+</div>
