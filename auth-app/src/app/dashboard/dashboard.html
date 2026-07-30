@@ -1,0 +1,22 @@
+<section class="dashboard-shell">
+  <div class="dashboard-card">
+    <p class="eyebrow">Area autenticada</p>
+    <h1>Dashboard</h1>
+    <p class="lead">Seu login foi concluido com sucesso. Esta tela representa a area protegida da aplicacao.</p>
+
+    @if (user(); as currentUser) {
+      <div class="user-panel">
+        <div>
+          <span class="label">Usuario</span>
+          <strong>{{ currentUser.username }}</strong>
+        </div>
+        <div>
+          <span class="label">Email</span>
+          <strong>{{ currentUser.email }}</strong>
+        </div>
+      </div>
+    }
+
+    <button type="button" class="logout-button" (click)="logout()">Sair</button>
+  </div>
+</section>
