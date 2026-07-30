@@ -4,6 +4,8 @@ import { map } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
+// Guard para rotas que requerem autenticação. 
+// Se o usuário não estiver autenticado, ele será redirecionado para a página de login.
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
