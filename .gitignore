@@ -1,0 +1,25 @@
+# Python
+api/.venv/
+api/__pycache__/
+api/**/*.pyc
+api/.pytest_cache/
+
+# Environment files
+api/.env
+auth-app/.env
+
+# SQLite
+*.db
+*.sqlite3
+
+# Node / Angular
+auth-app/node_modules/
+auth-app/dist/
+auth-app/.angular/
+auth-app/coverage/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
