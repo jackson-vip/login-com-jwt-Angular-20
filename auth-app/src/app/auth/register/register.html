@@ -24,7 +24,10 @@
             <!-- Password -->
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" formControlName="password" placeholder="Senha" />
+                <div class="pw-wrap">
+                    <input type="password" id="password" formControlName="password" placeholder="Senha" />
+                    <i class="fa-solid fa-eye"></i>
+                </div>
                 @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
                     <small class="error">A senha é obrigatória.</small>
                 }
@@ -33,7 +36,23 @@
                 }
             </div>
 
-            <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">Register</button>
+            @if (errorMessage()) {
+                <div class="feedback-banner feedback-error" role="alert" aria-live="assertive">
+                    <strong>Erro no cadastro</strong>
+                    <span>{{ errorMessage() }}</span>
+                </div>
+            }
+
+            @if (successMessage()) {
+                <div class="feedback-banner feedback-success" role="status" aria-live="polite">
+                    <strong>Cadastro concluido</strong>
+                    <span>{{ successMessage() }}</span>
+                </div>
+            }
+
+            <button type="submit" class="btn-primary" [disabled]="registerForm.invalid || isSubmitting()">
+                {{ isSubmitting() ? 'Cadastrando...' : 'Register' }}
+            </button>
         </form>
         <div class="auth-foot">
             <p>Já tem uma conta? <a routerLink="/login">Faça login</a></p>

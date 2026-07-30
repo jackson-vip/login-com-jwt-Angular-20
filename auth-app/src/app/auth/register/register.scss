@@ -99,6 +99,45 @@ $surface-2: #f3f4f6;
     }
 }
 
+.feedback-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 14px;
+
+    strong {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    span {
+        line-height: 1.4;
+    }
+}
+
+.feedback-error {
+    color: #991b1b;
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+
+.feedback-success {
+    color: #166534;
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.error {
+    margin-top: 6px;
+    color: #b91c1c;
+    font-size: 12px;
+}
+
 .auth-foot {
     margin-top: 20px;
     text-align: center;
@@ -122,4 +161,22 @@ $surface-2: #f3f4f6;
             text-decoration: underline;
         }
     }
+}
+
+.pw-wrap {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 40px; // Espaço para o ícone
+  }
+
+  i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: $text-muted;
+    cursor: pointer;
+  }
 }
