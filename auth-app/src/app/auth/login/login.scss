@@ -1,0 +1,159 @@
+$primary: #4b5563;
+$primary-dark: #374151;
+$text-strong: #1f2937;
+$text-muted: #6b7280;
+$surface-1: #f9fafb;
+$surface-2: #f3f4f6;
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: linear-gradient(135deg, $surface-1, $surface-2);
+  box-shadow: 0 10px 30px rgba(31, 41, 55, 0.1);
+
+  h2 {
+    margin: 0 0 10px;
+    color: $text-strong;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: $text-muted;
+    font-size: 14px;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  label {
+    margin-bottom: 8px;
+    color: $text-strong;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.15);
+    }
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: $primary;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+
+  &:hover:not(:disabled) {
+    background-color: $primary-dark;
+  }
+
+  &:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+  }
+}
+
+.feedback-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+
+  strong {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  span {
+    line-height: 1.4;
+  }
+}
+
+.feedback-error {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border-color: #fecaca;
+}
+
+.feedback-success {
+  color: #166534;
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.error {
+  margin-top: 6px;
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.auth-foot {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: $primary;
+    font-weight: 600;
+    text-decoration: none;
+  }
+}
+
+.pw-wrap {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 40px; // Espaço para o ícone
+  }
+
+  i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: $text-muted;
+    cursor: pointer;
+  }
+}

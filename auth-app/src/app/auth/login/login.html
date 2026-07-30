@@ -1,0 +1,55 @@
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Entrar</h2>
+    <p>Use seu email e senha para autenticar na API FastAPI.</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="admin@example.com" />
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']) {
+        <small class="error">O email e obrigatorio.</small>
+        }
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']) {
+        <small class="error">Informe um email valido.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <div class="pw-wrap">
+          <input id="password" type="password" formControlName="password" placeholder="123456" />
+          <i class="fa-solid fa-eye"></i>
+        </div>
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+        <small class="error">A senha e obrigatoria.</small>
+        }
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']) {
+        <small class="error">A senha deve ter no minimo 6 caracteres.</small>
+        }
+      </div>
+
+      @if (errorMessage()) {
+      <div class="feedback-banner feedback-error" role="alert" aria-live="assertive">
+        <strong>Erro no login</strong>
+        <span>{{ errorMessage() }}</span>
+      </div>
+      }
+
+      @if (successMessage()) {
+      <div class="feedback-banner feedback-success" role="status" aria-live="polite">
+        <strong>Login concluido</strong>
+        <span>{{ successMessage() }}</span>
+      </div>
+      }
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isSubmitting()">
+        {{ isSubmitting() ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+
+    <div class="auth-foot">
+      <p>Nao tem conta? <a routerLink="/register">Cadastre-se</a></p>
+    </div>
+  </div>
+</div>
