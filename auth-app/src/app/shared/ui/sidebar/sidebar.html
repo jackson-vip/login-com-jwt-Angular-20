@@ -12,12 +12,8 @@
     <nav class="app-sidebar__nav">
         @for (section of sections; track section.title) {
         <div class="app-sidebar__section">
-            <button 
-                type="button"
-                class="app-sidebar__section-header"
-                [class.is-collapsible]="section.collapsible"
-                (click)="toggleSection(section)"
-                [attr.aria-expanded]="section.expanded">
+            <button type="button" class="app-sidebar__section-header" [class.is-collapsible]="section.collapsible"
+                (click)="toggleSection(section)" [attr.aria-expanded]="section.expanded">
                 <span class="app-sidebar__section-content">
                     <i [class]="section.icon"></i>
                     <span>{{ section.title }}</span>
@@ -30,10 +26,7 @@
             @if (section.expanded) {
             <div class="app-sidebar__items">
                 @for (item of section.items; track item.path) {
-                <a 
-                    class="app-sidebar__link" 
-                    [routerLink]="item.path" 
-                    routerLinkActive="is-active" 
+                <a class="app-sidebar__link" [routerLink]="item.path" routerLinkActive="is-active"
                     (click)="handleNavigate()">
                     <i [class]="item.icon"></i>
                     <span>{{ item.label }}</span>
