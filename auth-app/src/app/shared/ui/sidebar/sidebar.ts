@@ -1,11 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 type NavItem = {
   label: string;
   path: string;
   icon: string;
+  badge?: number;
+};
+
+type NavSection = {
+  title: string;
+  icon: string;
+  collapsible: boolean;
+  expanded: boolean;
+  items: NavItem[];
 };
 
 @Component({
@@ -20,10 +30,61 @@ export class AppSidebarComponent {
   @Output() navigate = new EventEmitter<void>();
   @Output() closeMenu = new EventEmitter<void>();
 
-  readonly items: NavItem[] = [
-    { label: 'Dashboard', path: '/dashboard', icon: 'fa-solid fa-chart-line' },
-    { label: 'Clientes', path: '/clientes', icon: 'fa-solid fa-users' },
+  private readonly authService = inject(AuthService);
+
+  readonly sections: NavSection[] = [
+    {
+      title: 'Visão Geral',
+      icon: 'fa-solid fa-chart-line',
+      collapsible: false,
+      expanded: true,
+      items: [
+        { label: 'Dashboard', path: '/dashboard', icon: 'fa-solid fa-chart-line' },
+      ],
+    },
+    {
+      title: 'Gestão',
+      icon: 'fa-solid fa-folder',
+      collapsible: true,
+      expanded: true,
+      items: [
+        { label: 'Clientes', path: '/clientes', icon: 'fa-solid fa-users', badge: 12 },
+        { label: 'Fornecedores', path: '/fornecedores', icon: 'fa-solid fa-truck', badge: 8 },
+        { label: 'Produtos', path: '/produtos', icon: 'fa-solid fa-box', badge: 45 },
+      ],
+    },
+    {
+      title: 'Operações',
+      icon: 'fa-solid fa-exchange',
+      collapsible: true,
+      expanded: true,
+      items: [
+        { label: 'Entradas', path: '/entradas', icon: 'fa-solid fa-arrow-down', badge: 5 },
+        { label: 'Saídas', path: '/saidas', icon: 'fa-solid fa-arrow-up', badge: 3 },
+      ],
+    },
+    {
+      title: 'Relatórios',
+      icon: 'fa-solid fa-file-chart-line',
+      collapsible: true,
+      expanded: false,
+      items: [
+        { label: 'Vendas', path: '/relatorios/vendas', icon: 'fa-solid fa-chart-bar' },
+        { label: 'Inventário', path: '/relatorios/inventario', icon: 'fa-solid fa-boxes' },
+        { label: 'Financeiro', path: '/relatorios/financeiro', icon: 'fa-solid fa-dollar-sign' },
+      ],
+    },
   ];
+
+  get currentUser() {
+    return this.authService.getUser();
+  }
+
+  toggleSection(section: NavSection): void {
+    if (section.collapsible) {
+      section.expanded = !section.expanded;
+    }
+  }
 
   handleNavigate(): void {
     this.navigate.emit();
@@ -31,5 +92,11 @@ export class AppSidebarComponent {
 
   handleCloseMenu(): void {
     this.closeMenu.emit();
+  }
+
+  handleLogout(): void {
+    this.authService.logout().subscribe(() => {
+      // O interceptor + guard redirecionarão para login automaticamente
+    });
   }
 }

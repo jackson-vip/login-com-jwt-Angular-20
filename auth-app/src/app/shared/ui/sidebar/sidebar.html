@@ -1,17 +1,76 @@
 <aside class="app-sidebar" [class.is-open]="open">
     <div class="app-sidebar__header">
-        <span class="app-sidebar__title">Navegação</span>
+        <div class="app-sidebar__logo">
+            <i class="fa-solid fa-cube"></i>
+            <span>Auth App</span>
+        </div>
         <button type="button" class="app-sidebar__close" aria-label="Fechar menu" (click)="handleCloseMenu()">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
 
     <nav class="app-sidebar__nav">
-        @for (item of items; track item.path) {
-        <a class="app-sidebar__link" [routerLink]="item.path" routerLinkActive="is-active" (click)="handleNavigate()">
-            <i [class]="item.icon"></i>
-            <span>{{ item.label }}</span>
-        </a>
+        @for (section of sections; track section.title) {
+        <div class="app-sidebar__section">
+            <button 
+                type="button"
+                class="app-sidebar__section-header"
+                [class.is-collapsible]="section.collapsible"
+                (click)="toggleSection(section)"
+                [attr.aria-expanded]="section.expanded">
+                <span class="app-sidebar__section-content">
+                    <i [class]="section.icon"></i>
+                    <span>{{ section.title }}</span>
+                </span>
+                @if (section.collapsible) {
+                <i class="fa-solid fa-chevron-down" [class.is-rotated]="!section.expanded"></i>
+                }
+            </button>
+
+            @if (section.expanded) {
+            <div class="app-sidebar__items">
+                @for (item of section.items; track item.path) {
+                <a 
+                    class="app-sidebar__link" 
+                    [routerLink]="item.path" 
+                    routerLinkActive="is-active" 
+                    (click)="handleNavigate()">
+                    <i [class]="item.icon"></i>
+                    <span>{{ item.label }}</span>
+                    @if (item.badge) {
+                    <span class="app-sidebar__badge">{{ item.badge }}</span>
+                    }
+                </a>
+                }
+            </div>
+            }
+        </div>
         }
     </nav>
+
+    <div class="app-sidebar__footer">
+        @if (currentUser) {
+        <div class="app-sidebar__user">
+            <div class="app-sidebar__user-avatar">
+                {{ currentUser.username.charAt(0).toUpperCase() }}
+            </div>
+            <div class="app-sidebar__user-info">
+                <span class="app-sidebar__user-name">{{ currentUser.username }}</span>
+                <span class="app-sidebar__user-email">{{ currentUser.email }}</span>
+            </div>
+        </div>
+        }
+
+        <div class="app-sidebar__footer-actions">
+            <button class="app-sidebar__footer-btn" title="Help Center">
+                <i class="fa-solid fa-circle-question"></i>
+            </button>
+            <button class="app-sidebar__footer-btn" title="Configurações">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="app-sidebar__footer-btn" title="Sair" (click)="handleLogout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </div>
 </aside>

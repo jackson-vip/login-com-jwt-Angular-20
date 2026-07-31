@@ -27,25 +27,11 @@
     </header>
 
     <div class="private-layout__body">
-        <aside class="private-layout__sidebar" [class.is-open]="sidebarOpen()">
-            <div class="private-layout__sidebar-header">
-                <span class="private-layout__sidebar-title">Navegação</span>
-                <button type="button" class="private-layout__sidebar-close" aria-label="Fechar menu"
-                    (click)="closeSidebar()">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <nav class="private-layout__nav">
-                @for (item of items; track item.path) {
-                <a class="private-layout__link" [routerLink]="item.path" routerLinkActive="is-active"
-                    (click)="closeSidebar()">
-                    <i [class]="item.icon"></i>
-                    <span>{{ item.label }}</span>
-                </a>
-                }
-            </nav>
-        </aside>
+        <app-sidebar 
+            [open]="sidebarOpen()" 
+            (navigate)="closeSidebar()"
+            (closeMenu)="closeSidebar()">
+        </app-sidebar>
 
         <button type="button" class="private-layout__backdrop" [class.is-visible]="sidebarOpen()"
             aria-label="Fechar menu" (click)="closeSidebar()"></button>
