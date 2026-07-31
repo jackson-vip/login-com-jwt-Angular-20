@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 type NavItem = {
@@ -30,6 +30,7 @@ export class AppSidebarComponent {
   @Output() closeMenu = new EventEmitter<void>();
 
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly sections: NavSection[] = [
     {
@@ -43,7 +44,7 @@ export class AppSidebarComponent {
     },
     {
       title: 'Gestão',
-      icon: 'fa-solid fa-folder',
+      icon: 'fa-solid fa-user-gear',
       collapsible: true,
       expanded: true,
       items: [
@@ -64,7 +65,7 @@ export class AppSidebarComponent {
     },
     {
       title: 'Relatórios',
-      icon: 'fa-solid fa-file-chart-line',
+      icon: 'fa-solid fa-folder-tree',
       collapsible: true,
       expanded: false,
       items: [
@@ -95,7 +96,7 @@ export class AppSidebarComponent {
 
   handleLogout(): void {
     this.authService.logout().subscribe(() => {
-      // O interceptor + guard redirecionarão para login automaticamente
+      this.router.navigate(['/login']);
     });
   }
 }
