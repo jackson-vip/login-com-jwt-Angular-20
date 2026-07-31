@@ -1,0 +1,17 @@
+<aside class="app-sidebar" [class.is-open]="open">
+    <div class="app-sidebar__header">
+        <span class="app-sidebar__title">Navegação</span>
+        <button type="button" class="app-sidebar__close" aria-label="Fechar menu" (click)="handleCloseMenu()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <nav class="app-sidebar__nav">
+        @for (item of items; track item.path) {
+        <a class="app-sidebar__link" [routerLink]="item.path" routerLinkActive="is-active" (click)="handleNavigate()">
+            <i [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+        </a>
+        }
+    </nav>
+</aside>
