@@ -23,3 +23,15 @@ auth-app/coverage/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Shell configs (pessoal)
+.bash_profile
+.bashrc
+.profile
+.zprofile
+.zshrc
+.gitconfig
+
+# Configurações locais
+.mcp.json
+.rippreprc
