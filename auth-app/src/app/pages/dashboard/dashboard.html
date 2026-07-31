@@ -1,0 +1,39 @@
+<section class="dashboard-page">
+  <header class="dashboard-page__hero">
+    <div>
+      <p class="dashboard-page__eyebrow">Area autenticada</p>
+      <h1>Dashboard</h1>
+      <p class="dashboard-page__lead">
+        Aqui fica o painel principal da aplicacao, com cards, graficos e atalhos para as rotas operacionais.
+      </p>
+    </div>
+
+    @if (user(); as currentUser) {
+    <div class="dashboard-page__user-card">
+      <span class="dashboard-page__label">Sessao atual</span>
+      <strong>{{ currentUser.username }}</strong>
+      <small>{{ currentUser.email }}</small>
+    </div>
+    }
+  </header>
+
+  <div class="dashboard-page__grid">
+    <article class="dashboard-page__card">
+      <span class="dashboard-page__card-label">Atendimento</span>
+      <strong>Clientes</strong>
+      <p>Concentre listagem, filtros, importação e edição em uma única experiência responsiva.</p>
+    </article>
+
+    <article class="dashboard-page__card">
+      <span class="dashboard-page__card-label">Operação</span>
+      <strong>Fluxos</strong>
+      <p>Use a sidebar para acessar tarefas recorrentes sem poluir a página principal.</p>
+    </article>
+
+    <article class="dashboard-page__card">
+      <span class="dashboard-page__card-label">Saúde</span>
+      <strong>Status</strong>
+      <p>Esta área pode receber indicadores, alertas e estados do sistema em tempo real.</p>
+    </article>
+  </div>
+</section>
