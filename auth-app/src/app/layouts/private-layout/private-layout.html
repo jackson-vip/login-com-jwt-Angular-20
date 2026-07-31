@@ -27,10 +27,7 @@
     </header>
 
     <div class="private-layout__body">
-        <app-sidebar 
-            [open]="sidebarOpen()" 
-            (navigate)="closeSidebar()"
-            (closeMenu)="closeSidebar()">
+        <app-sidebar [open]="sidebarOpen()" (navigate)="closeSidebar()" (closeMenu)="closeSidebar()">
         </app-sidebar>
 
         <button type="button" class="private-layout__backdrop" [class.is-visible]="sidebarOpen()"
