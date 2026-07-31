@@ -7,7 +7,6 @@ type NavItem = {
   label: string;
   path: string;
   icon: string;
-  badge?: number;
 };
 
 type NavSection = {
@@ -48,9 +47,9 @@ export class AppSidebarComponent {
       collapsible: true,
       expanded: true,
       items: [
-        { label: 'Clientes', path: '/clientes', icon: 'fa-solid fa-users', badge: 12 },
-        { label: 'Fornecedores', path: '/fornecedores', icon: 'fa-solid fa-truck', badge: 8 },
-        { label: 'Produtos', path: '/produtos', icon: 'fa-solid fa-box', badge: 45 },
+        { label: 'Clientes', path: '/clientes', icon: 'fa-solid fa-users' },
+        { label: 'Fornecedores', path: '/fornecedores', icon: 'fa-solid fa-truck' },
+        { label: 'Produtos', path: '/produtos', icon: 'fa-solid fa-box' },
       ],
     },
     {
@@ -59,8 +58,8 @@ export class AppSidebarComponent {
       collapsible: true,
       expanded: true,
       items: [
-        { label: 'Entradas', path: '/entradas', icon: 'fa-solid fa-arrow-down', badge: 5 },
-        { label: 'Saídas', path: '/saidas', icon: 'fa-solid fa-arrow-up', badge: 3 },
+        { label: 'Entradas', path: '/entradas', icon: 'fa-solid fa-arrow-down' },
+        { label: 'Saídas', path: '/saidas', icon: 'fa-solid fa-arrow-up' },
       ],
     },
     {
