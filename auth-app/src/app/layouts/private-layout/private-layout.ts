@@ -1,14 +1,15 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
+import { AppHeaderComponent } from '../../shared/ui/header/header';
 import { AppSidebarComponent } from '../../shared/ui/sidebar/sidebar';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-private-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, AppSidebarComponent],
+  imports: [RouterOutlet, AppHeaderComponent, AppSidebarComponent],
   templateUrl: './private-layout.html',
   styleUrl: './private-layout.scss',
 })

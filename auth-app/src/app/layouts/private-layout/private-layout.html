@@ -1,30 +1,6 @@
 <div class="private-layout">
-    <header class="private-layout__header">
-        <div class="private-layout__brand">
-            <button type="button" class="private-layout__menu-button" [attr.aria-expanded]="sidebarOpen()"
-                aria-label="Abrir menu" (click)="toggleSidebar()">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <a routerLink="/dashboard" class="private-layout__logo">
-                <span class="private-layout__logo-mark">JWT</span>
-                <span class="private-layout__logo-text">Portal interno</span>
-            </a>
-        </div>
-
-        <div class="private-layout__actions">
-            @if (user(); as currentUser) {
-            <div class="private-layout__user-chip">
-                <span class="private-layout__user-label">Conectado como</span>
-                <strong>{{ currentUser.username }}</strong>
-            </div>
-            }
-
-            <button type="button" class="private-layout__logout" (click)="logout()">
-                Sair
-            </button>
-        </div>
-    </header>
+    <app-header [user]="user()" [sidebarOpen]="sidebarOpen()" (menuToggle)="toggleSidebar()"
+        (logoutRequest)="logout()"></app-header>
 
     <div class="private-layout__body" [class.is-sidebar-collapsed]="sidebarCollapsed()">
         <app-sidebar [open]="sidebarOpen()" [collapsed]="sidebarCollapsed()" (navigate)="closeSidebar()"
