@@ -1,9 +1,14 @@
-<aside class="app-sidebar" [class.is-open]="open">
+<aside class="app-sidebar" [class.is-open]="open" [class.is-collapsed]="collapsed">
     <div class="app-sidebar__header">
         <div class="app-sidebar__logo">
             <i class="fa-solid fa-cube"></i>
-            <span>Auth App</span>
+            <span class="app-sidebar__logo-text">Auth App</span>
         </div>
+        <button type="button" class="app-sidebar__collapse" [attr.aria-label]="collapsed ? 'Expandir menu' : 'Recolher menu'"
+            [attr.aria-pressed]="collapsed" [attr.title]="getTooltip(collapsed ? 'Expandir menu' : 'Recolher menu')"
+            (click)="handleToggleCollapse()">
+            <i class="fa-solid" [class.fa-angle-right]="collapsed" [class.fa-angle-left]="!collapsed"></i>
+        </button>
         <button type="button" class="app-sidebar__close" aria-label="Fechar menu" (click)="handleCloseMenu()">
             <i class="fa-solid fa-xmark"></i>
         </button>
@@ -13,27 +18,31 @@
         @for (section of sections; track section.title) {
         <div class="app-sidebar__section">
             <button type="button" class="app-sidebar__section-header" [class.is-collapsible]="section.collapsible"
-                (click)="toggleSection(section)" [attr.aria-expanded]="section.expanded">
+                [class.is-active]="isSectionActive(section)" (click)="toggleSection(section)"
+                [attr.aria-expanded]="section.expanded" [attr.title]="getTooltip(section.title)">
                 <span class="app-sidebar__section-content">
                     <i [class]="section.icon"></i>
-                    <span>{{ section.title }}</span>
+                    <span class="app-sidebar__section-label">{{ section.title }}</span>
                 </span>
-                @if (section.collapsible) {
+                @if (section.collapsible && !collapsed) {
                 <i class="fa-solid fa-chevron-down" [class.is-rotated]="!section.expanded"></i>
                 }
             </button>
 
-            @if (section.expanded) {
-            <div class="app-sidebar__items">
-                @for (item of section.items; track item.path) {
-                <a class="app-sidebar__link" [routerLink]="item.path" routerLinkActive="is-active"
-                    (click)="handleNavigate()">
-                    <i [class]="item.icon"></i>
-                    <span>{{ item.label }}</span>
-                </a>
-                }
+            <div class="app-sidebar__items-wrapper" [class.is-expanded]="section.expanded"
+                [attr.aria-hidden]="section.collapsible ? !section.expanded : null">
+                <div class="app-sidebar__items">
+                    @for (item of section.items; track item.path) {
+                    <a class="app-sidebar__link" [routerLink]="item.path" routerLinkActive="is-active"
+                        [attr.aria-current]="isRouteActive(item.path) ? 'page' : null" [attr.aria-label]="getTooltip(item.label)"
+                        [attr.title]="getTooltip(item.label)"
+                        (click)="handleNavigate()">
+                        <i [class]="item.icon"></i>
+                        <span class="app-sidebar__link-label">{{ item.label }}</span>
+                    </a>
+                    }
+                </div>
             </div>
-            }
         </div>
         }
     </nav>
@@ -52,13 +61,17 @@
         }
 
         <div class="app-sidebar__footer-actions">
-            <button class="app-sidebar__footer-btn" title="Help Center">
+            <button class="app-sidebar__footer-btn" [attr.aria-label]="getTooltip('Help Center')"
+                [attr.title]="getTooltip('Help Center')">
                 <i class="fa-solid fa-circle-question"></i>
             </button>
-            <button class="app-sidebar__footer-btn" title="Configurações">
+            <button class="app-sidebar__footer-btn" [attr.aria-label]="getTooltip('Configurações')"
+                [attr.title]="getTooltip('Configurações')">
                 <i class="fa-solid fa-gear"></i>
             </button>
-            <button class="app-sidebar__footer-btn" title="Sair" (click)="handleLogout()">
+            <button class="app-sidebar__footer-btn" [attr.aria-label]="getTooltip('Sair')"
+                [attr.title]="getTooltip('Sair')"
+                (click)="handleLogout()">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
         </div>
