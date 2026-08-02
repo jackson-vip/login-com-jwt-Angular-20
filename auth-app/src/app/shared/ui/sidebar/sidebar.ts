@@ -1,5 +1,17 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Input, Output, PLATFORM_ID, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -25,8 +37,17 @@ type NavSection = {
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
-export class AppSidebarComponent {
+export class AppSidebarComponent implements OnChanges {
   private static readonly SECTIONS_PREFERENCE_KEY = 'app-sidebar.sections-expanded';
+  private static readonly MOBILE_DRAWER_MEDIA_QUERY = '(max-width: 960px)';
+  private static readonly FOCUSABLE_SELECTOR = [
+    'a[href]',
+    'button:not([disabled])',
+    'textarea:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(',');
 
   @Input() open = false;
   @Input() collapsed = false;
@@ -34,10 +55,13 @@ export class AppSidebarComponent {
   @Output() closeMenu = new EventEmitter<void>();
   @Output() toggleCollapse = new EventEmitter<void>();
 
+  @ViewChild('sidebarRoot') private readonly sidebarRoot?: ElementRef<HTMLElement>;
+
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private lastFocusedElement: HTMLElement | null = null;
 
   readonly sections: NavSection[] = [
     {
@@ -115,6 +139,36 @@ export class AppSidebarComponent {
 
   getTooltip(label: string): string | null {
     return this.collapsed ? label : null;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.isBrowser || !changes['open']) {
+      return;
+    }
+
+    if (changes['open'].currentValue) {
+      this.activateMobileFocusTrap();
+      return;
+    }
+
+    this.restoreFocusAfterClose();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.open || !this.isMobileDrawer()) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.handleCloseMenu();
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      this.trapFocus(event);
+    }
   }
 
   toggleSection(section: NavSection): void {
@@ -208,6 +262,96 @@ export class AppSidebarComponent {
     localStorage.setItem(
       AppSidebarComponent.SECTIONS_PREFERENCE_KEY,
       JSON.stringify(expandedByTitle),
+    );
+  }
+
+  private isMobileDrawer(): boolean {
+    return this.isBrowser && window.matchMedia(AppSidebarComponent.MOBILE_DRAWER_MEDIA_QUERY).matches;
+  }
+
+  private activateMobileFocusTrap(): void {
+    if (!this.isMobileDrawer()) {
+      return;
+    }
+
+    const activeElement = document.activeElement;
+
+    this.lastFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
+
+    setTimeout(() => {
+      if (!this.open) {
+        return;
+      }
+
+      const focusableElements = this.getFocusableElements();
+
+      if (focusableElements.length > 0) {
+        focusableElements[0].focus();
+        return;
+      }
+
+      this.sidebarRoot?.nativeElement.focus();
+    });
+  }
+
+  private restoreFocusAfterClose(): void {
+    if (!this.isMobileDrawer() || !this.lastFocusedElement) {
+      this.lastFocusedElement = null;
+      return;
+    }
+
+    const elementToFocus = this.lastFocusedElement;
+    this.lastFocusedElement = null;
+
+    setTimeout(() => {
+      if (typeof elementToFocus.focus === 'function') {
+        elementToFocus.focus();
+      }
+    });
+  }
+
+  private trapFocus(event: KeyboardEvent): void {
+    const focusableElements = this.getFocusableElements();
+
+    if (focusableElements.length === 0) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+    const hasFocusInsideSidebar =
+      activeElement instanceof HTMLElement && this.sidebarRoot?.nativeElement.contains(activeElement);
+
+    if (!hasFocusInsideSidebar) {
+      event.preventDefault();
+      firstElement.focus();
+      return;
+    }
+
+    if (event.shiftKey && activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+      return;
+    }
+
+    if (!event.shiftKey && activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  }
+
+  private getFocusableElements(): HTMLElement[] {
+    const sidebarElement = this.sidebarRoot?.nativeElement;
+
+    if (!sidebarElement) {
+      return [];
+    }
+
+    const candidates = sidebarElement.querySelectorAll<HTMLElement>(AppSidebarComponent.FOCUSABLE_SELECTOR);
+
+    return Array.from(candidates).filter(
+      (element) => !element.hasAttribute('disabled') && element.getClientRects().length > 0,
     );
   }
 }
