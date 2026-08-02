@@ -26,8 +26,9 @@
         </div>
     </header>
 
-    <div class="private-layout__body">
-        <app-sidebar [open]="sidebarOpen()" (navigate)="closeSidebar()" (closeMenu)="closeSidebar()">
+    <div class="private-layout__body" [class.is-sidebar-collapsed]="sidebarCollapsed()">
+        <app-sidebar [open]="sidebarOpen()" [collapsed]="sidebarCollapsed()" (navigate)="closeSidebar()"
+            (closeMenu)="closeSidebar()" (toggleCollapse)="toggleSidebarCollapsed()">
         </app-sidebar>
 
         <button type="button" class="private-layout__backdrop" [class.is-visible]="sidebarOpen()"
