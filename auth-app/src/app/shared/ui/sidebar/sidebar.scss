@@ -462,8 +462,9 @@
     gap: 5px;
     padding: 4px;
   }
-
+  
   .app-sidebar__footer-btn {
+    flex: auto;
     height: 34px;
   }
 }
