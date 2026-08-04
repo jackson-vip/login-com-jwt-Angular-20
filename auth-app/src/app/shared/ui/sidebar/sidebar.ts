@@ -74,6 +74,16 @@ export class AppSidebarComponent implements OnChanges {
       ],
     },
     {
+      title: 'Usuários',
+      icon: 'fa-solid fa-users',
+      collapsible: true,
+      expanded: true,
+      items: [
+        { label: 'Lista de Usuários', path: '/usuarios', icon: 'fa-solid fa-user' },
+        { label: 'Grupo de Acesso', path: '/grupo-acesso', icon: 'fa-solid fa-user-shield' },
+      ],
+    },
+    {
       title: 'Gestão',
       icon: 'fa-solid fa-user-gear',
       collapsible: true,
